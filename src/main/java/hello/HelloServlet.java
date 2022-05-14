@@ -64,7 +64,7 @@ public class HelloServlet extends HttpServlet {
 
         Calendar c = Calendar.getInstance();
         int hourOfDay = c.get(Calendar.HOUR_OF_DAY);
-        String timeOfDay;
+        String timeOfDay = "morning";
 
         if(hourOfDay >= 0 && hourOfDay < 12)
             timeOfDay = "morning";
@@ -84,8 +84,9 @@ public class HelloServlet extends HttpServlet {
             lang = "pt";
         if(treatment==null)
             treatment = "none";
-      
-        msg = json.get(lang).get("greeting")+", "+json.get(lang).get(timeOfDay)+" "+json.get(lang).get(treatment)+" ";
+        
+        JSONObject lang_json = json.getJSONObject(lang);
+        msg = lang_json.get("greeting")+", "+lang_json.get(timeOfDay)+" "+lang_json.get(treatment)+" ";
 
         String nome = request.getParameter("nome");
 
@@ -121,30 +122,31 @@ public class HelloServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                Calendar c = Calendar.getInstance();
-                int hourOfDay = c.get(Calendar.HOUR_OF_DAY);
-                String timeOfDay;
+        Calendar c = Calendar.getInstance();
+        int hourOfDay = c.get(Calendar.HOUR_OF_DAY);
+        String timeOfDay = "morning";
+
+        if(hourOfDay >= 0 && hourOfDay < 12)
+            timeOfDay = "morning";
+        else if(hourOfDay >= 12 && hourOfDay < 18)
+            timeOfDay = "afternoon";
+        else if(hourOfDay >= 18 && hourOfDay < 24)
+            timeOfDay = "evening";
         
-                if(hourOfDay >= 0 && hourOfDay < 12)
-                    timeOfDay = "morning";
-                else if(hourOfDay >= 12 && hourOfDay < 18)
-                    timeOfDay = "afternoon";
-                else if(hourOfDay >= 18 && hourOfDay < 24)
-                    timeOfDay = "evening";
-                
-                
-                String string_json = "{\"pt\":{\"greeting\":\"Olá\",\"morning\":\"bomdia\",\"afternoon\":\"boatarde\",\"evening\":\"boanoite\",\"sr\":\"Sr.\",\"sra\":\"Sra.\",\"none\":\"\"},\"en\":{\"greeting\":\"Hello\",\"morning\":\"goodmorning\",\"afternoon\":\"goodafternoon\",\"evening\":\"goodevening\",\"sr\":\"Mr.\",\"sra\":\"Mrs\",\"none\":\"\"},\"fr\":{\"greeting\":\"Bonjour\",\"morning\":\"bonmatin\",\"afternoon\":\"bonaprès-midi\",\"evening\":\"bonnenuit\",\"sr\":\"Monsieur\",\"sra\":\"Mme\",\"none\":\"\"},\"de\":{\"greeting\":\"Hallo\",\"morning\":\"gutenmorgen\",\"afternoon\":\"gutentag\",\"evening\":\"gutenacht\",\"sr\":\"Herr\",\"sra\":\"Frau\",\"none\":\"\"},\"esp\":{\"greeting\":\"Hola\",\"morning\":\"buendía\",\"afternoon\":\"buenastardes\",\"evening\":\"buenasnoches\",\"sr\":\"señor\",\"sra\":\"Sra.\",\"none\":\"\"},\"hav\":{\"greeting\":\"Aloha\",\"morning\":\"alohakakahiaka\",\"afternoon\":\"alohaawakea,alohaAuinalā\",\"evening\":\"alohaahiahi\",\"sr\":\"'OMr\",\"sra\":\"Uaha'iaku'oMrs\",\"none\":\"\"},}";
-                var json = new JSONObject(string_json);
-                String msg = "";
-                
-                String lang = request.getParameter("lang");
-                String treatment = request.getParameter("treatment");
-                if(lang==null)
-                    lang = "pt";
-                if(treatment==null)
-                    treatment = "none";
-              
-                msg = json.get(lang).get("greeting")+", "+json.get(lang).get(timeOfDay)+" "+json.get(lang).get(treatment)+" ";
+        
+        String string_json = "{\"pt\":{\"greeting\":\"Olá\",\"morning\":\"bomdia\",\"afternoon\":\"boatarde\",\"evening\":\"boanoite\",\"sr\":\"Sr.\",\"sra\":\"Sra.\",\"none\":\"\"},\"en\":{\"greeting\":\"Hello\",\"morning\":\"goodmorning\",\"afternoon\":\"goodafternoon\",\"evening\":\"goodevening\",\"sr\":\"Mr.\",\"sra\":\"Mrs\",\"none\":\"\"},\"fr\":{\"greeting\":\"Bonjour\",\"morning\":\"bonmatin\",\"afternoon\":\"bonaprès-midi\",\"evening\":\"bonnenuit\",\"sr\":\"Monsieur\",\"sra\":\"Mme\",\"none\":\"\"},\"de\":{\"greeting\":\"Hallo\",\"morning\":\"gutenmorgen\",\"afternoon\":\"gutentag\",\"evening\":\"gutenacht\",\"sr\":\"Herr\",\"sra\":\"Frau\",\"none\":\"\"},\"esp\":{\"greeting\":\"Hola\",\"morning\":\"buendía\",\"afternoon\":\"buenastardes\",\"evening\":\"buenasnoches\",\"sr\":\"señor\",\"sra\":\"Sra.\",\"none\":\"\"},\"hav\":{\"greeting\":\"Aloha\",\"morning\":\"alohakakahiaka\",\"afternoon\":\"alohaawakea,alohaAuinalā\",\"evening\":\"alohaahiahi\",\"sr\":\"'OMr\",\"sra\":\"Uaha'iaku'oMrs\",\"none\":\"\"},}";
+        JSONObject json = new JSONObject(string_json);
+        String msg = "";
+        
+        String lang = request.getParameter("lang");
+        String treatment = request.getParameter("treatment");
+        if(lang==null)
+            lang = "pt";
+        if(treatment==null)
+            treatment = "none";
+        
+        JSONObject lang_json = json.getJSONObject(lang);
+        msg = lang_json.get("greeting")+", "+lang_json.get(timeOfDay)+" "+lang_json.get(treatment)+" ";
 
         String nome = request.getParameter("nome");
 
