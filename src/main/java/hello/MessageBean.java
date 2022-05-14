@@ -40,10 +40,10 @@ public class MessageBean implements Serializable {
                 msg = "Bonjour";
                 break;
             case "esp":
-                msg = "Hola"
+                msg = "Hola";
                 break;
             case "hav":
-                msg = "Aloha"
+                msg = "Aloha";
                 break;
         }
     }
