@@ -87,7 +87,7 @@ public class HelloServlet extends HttpServlet {
         if(treatment==null)
             treatment = "none";
       
-        msg = dict[lang]["greeting"]", "+dict[lang][timeOfDay]+" "+dict[lang][treatment]+" ";
+        msg = dict.get(lang).get("greeting")+", "+dict.get(lang).get(timeOfDay)+" "+dict.get(lang).get(treatment)+" ";
 
         String nome = request.getParameter("nome");
 
@@ -155,7 +155,7 @@ public class HelloServlet extends HttpServlet {
         if(treatment==null)
             treatment = "none";
       
-        msg = dict[lang]["greeting"]", "+dict[lang][timeOfDay]+" "+dict[lang][treatment]+" ";
+        msg = dict.get(lang).get("greeting")", "+dict.get(lang).get(timeOfDay)+" "+dict.get(lang).get(treatment)+" ";
 
         String nome = request.getParameter("nome");
 
