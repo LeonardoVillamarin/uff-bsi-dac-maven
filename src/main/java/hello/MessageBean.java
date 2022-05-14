@@ -27,7 +27,6 @@ public class MessageBean implements Serializable {
     
     public void setMsg(String value) {
         switch (value){
-            case "":
             case "pt":
                 msg = "Alô";
                 break;
@@ -39,6 +38,12 @@ public class MessageBean implements Serializable {
                 break;
             case "fr":
                 msg = "Bonjour";
+                break;
+            case "esp":
+                msg = "Hola"
+                break;
+            case "hav":
+                msg = "Aloha"
                 break;
         }
     }

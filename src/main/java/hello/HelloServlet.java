@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 
 /**
  *
@@ -58,24 +59,36 @@ public class HelloServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
         
+        if(timeOfDay >= 0 && timeOfDay < 12){
+            timeOfDay = "morning";
+        }else if(timeOfDay >= 12 && timeOfDay < 18){
+            timeOfDay = "afternoon";
+        }else if(timeOfDay >= 18 && timeOfDay < 24){
+            timeOfDay = "evening";
+        }
+        
+        dict = {"pt": {"greeting": "Olá", "morning": "bom dia ", "afternoon": "boa tarde ", "evening": "boa noite ", "sr": "Sr. ", "sra": "Sra. ", "none": ""},
+                "en": {"greeting": "Hello","morning": "good morning", "afternoon": "good afternoon", "evening": "good evening", "sr": "Mr.", "sra": "Mrs", "none": ""},
+                "fr": {"greeting": "Bonjour", "morning": "bon matin ", "afternoon": "bon après-midi ", "evening": "bonne nuit ", "sr": "Monsieur ", "sra": "Mme ", "none": ""},
+                "de": {"greeting": "Hallo", "morning": "guten morgen ", "afternoon": "guten tag ", "evening": "gute nacht ", "sr": "Herr ", "sra": "Frau ", "none": ""},
+                "esp": {"greeting": "Hola", "morning": "buen día ", "afternoon": "buenas tardes ", "evening": "buenas noches ", "sr": "señor ", "sra": "Sra. ", "none": ""},
+                "hav": {"greeting": "Aloha", "morning": "aloha kakahiaka ", "afternoon": "aloha awakea, aloha Auinalā ", "evening": "aloha ahiahi ", "sr": "'O Mr ", "sra": "Ua ha'i aku 'o Mrs ", "none": ""},
+                }
+
         String msg = "";
         
         String lang = request.getParameter("lang");
         if(lang==null)
             lang = "pt";
-        switch(lang){
-            case "pt":
-                msg = "Alô, ";
-                break;
-            case "en":
-                msg = "Hello, ";
-                break;
-            case "fr":
-                msg = "Bonjour, ";
-                break;
-        }
-        
+        if(treatment==null)
+            treatment = "none";
+      
+        msg = dict[lang]["greeting"]", "+dict[lang][timeOfDay]+" "+dict[lang][treatment]+" ";
+
         String nome = request.getParameter("nome");
 
         if(nome==null)
@@ -113,30 +126,44 @@ public class HelloServlet extends HttpServlet {
         String msg = "";
         
         String lang = request.getParameter("lang");
-        if(lang==null)
-            lang = "pt";
-        switch(lang){
-            case "pt":
-                msg = "Alô, ";
-                break;
-            case "en":
-                msg = "Hello, ";
-                break;
-            case "fr":
-                msg = "Bonjour, ";
-                break;
-            case "de":
-                msg = "Hallo, ";
-                break;
+        String treatment = request.getParameter("treatment");
+
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+        
+        if(timeOfDay >= 0 && timeOfDay < 12){
+            timeOfDay = "morning";
+        }else if(timeOfDay >= 12 && timeOfDay < 18){
+            timeOfDay = "afternoon";
+        }else if(timeOfDay >= 18 && timeOfDay < 24){
+            timeOfDay = "evening";
         }
         
+        dict = {"pt": {"greeting": "Olá", "morning": "bom dia ", "afternoon": "boa tarde ", "evening": "boa noite ", "sr": "Sr. ", "sra": "Sra. ", "none": ""},
+                "en": {"greeting": "Hello","morning": "good morning", "afternoon": "good afternoon", "evening": "good evening", "sr": "Mr.", "sra": "Mrs", "none": ""},
+                "fr": {"greeting": "Bonjour", "morning": "bon matin ", "afternoon": "bon après-midi ", "evening": "bonne nuit ", "sr": "Monsieur ", "sra": "Mme ", "none": ""},
+                "de": {"greeting": "Hallo", "morning": "guten morgen ", "afternoon": "guten tag ", "evening": "gute nacht ", "sr": "Herr ", "sra": "Frau ", "none": ""},
+                "esp": {"greeting": "Hola", "morning": "buen día ", "afternoon": "buenas tardes ", "evening": "buenas noches ", "sr": "señor ", "sra": "Sra. ", "none": ""},
+                "hav": {"greeting": "Aloha", "morning": "aloha kakahiaka ", "afternoon": "aloha awakea, aloha Auinalā ", "evening": "aloha ahiahi ", "sr": "'O Mr ", "sra": "Ua ha'i aku 'o Mrs ", "none": ""},
+                }
+
+        String msg = "";
+        
+        String lang = request.getParameter("lang");
+        if(lang==null)
+            lang = "pt";
+        if(treatment==null)
+            treatment = "none";
+      
+        msg = dict[lang]["greeting"]", "+dict[lang][timeOfDay]+" "+dict[lang][treatment]+" ";
+
         String nome = request.getParameter("nome");
 
         if(nome==null)
             nome = "Fulano";
         
         msg = msg+nome+"!";
-
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
