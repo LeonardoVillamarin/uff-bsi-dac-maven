@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package hello;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
+import org.json.JSONObject;
 
 /**
  *
@@ -61,33 +61,29 @@ public class HelloServlet extends HttpServlet {
             throws ServletException, IOException {
 
         Calendar c = Calendar.getInstance();
-        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-        
-        if(timeOfDay >= 0 && timeOfDay < 12){
-            timeOfDay = "morning";
-        }else if(timeOfDay >= 12 && timeOfDay < 18){
-            timeOfDay = "afternoon";
-        }else if(timeOfDay >= 18 && timeOfDay < 24){
-            timeOfDay = "evening";
-        }
-        
-        dict = {"pt": {"greeting": "Olá", "morning": "bom dia ", "afternoon": "boa tarde ", "evening": "boa noite ", "sr": "Sr. ", "sra": "Sra. ", "none": ""},
-                "en": {"greeting": "Hello","morning": "good morning", "afternoon": "good afternoon", "evening": "good evening", "sr": "Mr.", "sra": "Mrs", "none": ""},
-                "fr": {"greeting": "Bonjour", "morning": "bon matin ", "afternoon": "bon après-midi ", "evening": "bonne nuit ", "sr": "Monsieur ", "sra": "Mme ", "none": ""},
-                "de": {"greeting": "Hallo", "morning": "guten morgen ", "afternoon": "guten tag ", "evening": "gute nacht ", "sr": "Herr ", "sra": "Frau ", "none": ""},
-                "esp": {"greeting": "Hola", "morning": "buen día ", "afternoon": "buenas tardes ", "evening": "buenas noches ", "sr": "señor ", "sra": "Sra. ", "none": ""},
-                "hav": {"greeting": "Aloha", "morning": "aloha kakahiaka ", "afternoon": "aloha awakea, aloha Auinalā ", "evening": "aloha ahiahi ", "sr": "'O Mr ", "sra": "Ua ha'i aku 'o Mrs ", "none": ""},
-                }
+        int hourOfDay = c.get(Calendar.HOUR_OF_DAY);
+        String timeOfDay;
 
+        if(hourOfDay >= 0 && hourOfDay < 12)
+            timeOfDay = "morning";
+        else if(hourOfDay >= 12 && hourOfDay < 18)
+            timeOfDay = "afternoon";
+        else if(hourOfDay >= 18 && hourOfDay < 24)
+            timeOfDay = "evening";
+        
+        
+        String string_json = "{\"pt\":{\"greeting\":\"Olá\",\"morning\":\"bomdia\",\"afternoon\":\"boatarde\",\"evening\":\"boanoite\",\"sr\":\"Sr.\",\"sra\":\"Sra.\",\"none\":\"\"},\"en\":{\"greeting\":\"Hello\",\"morning\":\"goodmorning\",\"afternoon\":\"goodafternoon\",\"evening\":\"goodevening\",\"sr\":\"Mr.\",\"sra\":\"Mrs\",\"none\":\"\"},\"fr\":{\"greeting\":\"Bonjour\",\"morning\":\"bonmatin\",\"afternoon\":\"bonaprès-midi\",\"evening\":\"bonnenuit\",\"sr\":\"Monsieur\",\"sra\":\"Mme\",\"none\":\"\"},\"de\":{\"greeting\":\"Hallo\",\"morning\":\"gutenmorgen\",\"afternoon\":\"gutentag\",\"evening\":\"gutenacht\",\"sr\":\"Herr\",\"sra\":\"Frau\",\"none\":\"\"},\"esp\":{\"greeting\":\"Hola\",\"morning\":\"buendía\",\"afternoon\":\"buenastardes\",\"evening\":\"buenasnoches\",\"sr\":\"señor\",\"sra\":\"Sra.\",\"none\":\"\"},\"hav\":{\"greeting\":\"Aloha\",\"morning\":\"alohakakahiaka\",\"afternoon\":\"alohaawakea,alohaAuinalā\",\"evening\":\"alohaahiahi\",\"sr\":\"'OMr\",\"sra\":\"Uaha'iaku'oMrs\",\"none\":\"\"},}";
+        var json = new JSONObject(string_json);
         String msg = "";
         
         String lang = request.getParameter("lang");
+        String treatment = request.getParameter("treatment");
         if(lang==null)
             lang = "pt";
         if(treatment==null)
             treatment = "none";
       
-        msg = dict.get(lang).get("greeting")+", "+dict.get(lang).get(timeOfDay)+" "+dict.get(lang).get(treatment)+" ";
+        msg = json.get(lang).get("greeting")+", "+json.get(lang).get(timeOfDay)+" "+json.get(lang).get(treatment)+" ";
 
         String nome = request.getParameter("nome");
 
@@ -123,39 +119,30 @@ public class HelloServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String msg = "";
+                Calendar c = Calendar.getInstance();
+                int hourOfDay = c.get(Calendar.HOUR_OF_DAY);
+                String timeOfDay;
         
-        String lang = request.getParameter("lang");
-        String treatment = request.getParameter("treatment");
-
-        Calendar c = Calendar.getInstance();
-        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-        
-        if(timeOfDay >= 0 && timeOfDay < 12){
-            timeOfDay = "morning";
-        }else if(timeOfDay >= 12 && timeOfDay < 18){
-            timeOfDay = "afternoon";
-        }else if(timeOfDay >= 18 && timeOfDay < 24){
-            timeOfDay = "evening";
-        }
-        
-        dict = {"pt": {"greeting": "Olá", "morning": "bom dia ", "afternoon": "boa tarde ", "evening": "boa noite ", "sr": "Sr. ", "sra": "Sra. ", "none": ""},
-                "en": {"greeting": "Hello","morning": "good morning", "afternoon": "good afternoon", "evening": "good evening", "sr": "Mr.", "sra": "Mrs", "none": ""},
-                "fr": {"greeting": "Bonjour", "morning": "bon matin ", "afternoon": "bon après-midi ", "evening": "bonne nuit ", "sr": "Monsieur ", "sra": "Mme ", "none": ""},
-                "de": {"greeting": "Hallo", "morning": "guten morgen ", "afternoon": "guten tag ", "evening": "gute nacht ", "sr": "Herr ", "sra": "Frau ", "none": ""},
-                "esp": {"greeting": "Hola", "morning": "buen día ", "afternoon": "buenas tardes ", "evening": "buenas noches ", "sr": "señor ", "sra": "Sra. ", "none": ""},
-                "hav": {"greeting": "Aloha", "morning": "aloha kakahiaka ", "afternoon": "aloha awakea, aloha Auinalā ", "evening": "aloha ahiahi ", "sr": "'O Mr ", "sra": "Ua ha'i aku 'o Mrs ", "none": ""},
-                }
-
-        String msg = "";
-        
-        String lang = request.getParameter("lang");
-        if(lang==null)
-            lang = "pt";
-        if(treatment==null)
-            treatment = "none";
-      
-        msg = dict.get(lang).get("greeting")", "+dict.get(lang).get(timeOfDay)+" "+dict.get(lang).get(treatment)+" ";
+                if(hourOfDay >= 0 && hourOfDay < 12)
+                    timeOfDay = "morning";
+                else if(hourOfDay >= 12 && hourOfDay < 18)
+                    timeOfDay = "afternoon";
+                else if(hourOfDay >= 18 && hourOfDay < 24)
+                    timeOfDay = "evening";
+                
+                
+                String string_json = "{\"pt\":{\"greeting\":\"Olá\",\"morning\":\"bomdia\",\"afternoon\":\"boatarde\",\"evening\":\"boanoite\",\"sr\":\"Sr.\",\"sra\":\"Sra.\",\"none\":\"\"},\"en\":{\"greeting\":\"Hello\",\"morning\":\"goodmorning\",\"afternoon\":\"goodafternoon\",\"evening\":\"goodevening\",\"sr\":\"Mr.\",\"sra\":\"Mrs\",\"none\":\"\"},\"fr\":{\"greeting\":\"Bonjour\",\"morning\":\"bonmatin\",\"afternoon\":\"bonaprès-midi\",\"evening\":\"bonnenuit\",\"sr\":\"Monsieur\",\"sra\":\"Mme\",\"none\":\"\"},\"de\":{\"greeting\":\"Hallo\",\"morning\":\"gutenmorgen\",\"afternoon\":\"gutentag\",\"evening\":\"gutenacht\",\"sr\":\"Herr\",\"sra\":\"Frau\",\"none\":\"\"},\"esp\":{\"greeting\":\"Hola\",\"morning\":\"buendía\",\"afternoon\":\"buenastardes\",\"evening\":\"buenasnoches\",\"sr\":\"señor\",\"sra\":\"Sra.\",\"none\":\"\"},\"hav\":{\"greeting\":\"Aloha\",\"morning\":\"alohakakahiaka\",\"afternoon\":\"alohaawakea,alohaAuinalā\",\"evening\":\"alohaahiahi\",\"sr\":\"'OMr\",\"sra\":\"Uaha'iaku'oMrs\",\"none\":\"\"},}";
+                var json = new JSONObject(string_json);
+                String msg = "";
+                
+                String lang = request.getParameter("lang");
+                String treatment = request.getParameter("treatment");
+                if(lang==null)
+                    lang = "pt";
+                if(treatment==null)
+                    treatment = "none";
+              
+                msg = json.get(lang).get("greeting")+", "+json.get(lang).get(timeOfDay)+" "+json.get(lang).get(treatment)+" ";
 
         String nome = request.getParameter("nome");
 
