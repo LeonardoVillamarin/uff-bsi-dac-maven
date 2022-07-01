@@ -6,13 +6,26 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Demo do Tópico 1</title>
+        <title>Formulário de HelloWorld (usando o HelloServlet.java)</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>Funcionalidades disponíveis:</div>
-        <p>HelloServlet.java (Método GET) (<a href=".\alomundo?lang=en&nome=Fulano&treatment=sr">link</a>)</p>
-        <p>Formulário de HelloWorld (usando o HelloServlet.java - Método POST) (<a href=".\helloform.html">link</a>)</p>
+        <div>Formulário de HelloWorld (usando o HelloServlet.java)</div>
+           <form action="alomundo" method="post">
+           <br>Idioma: <input type="radio" name="lang" value="pt" checked> Português
+           <input type="radio" name="lang" value="en"> Inglês
+           <input type="radio" name="lang" value="fr"> Francês
+           <input type="radio" name="lang" value="de"> Alemão
+           <input type="radio" name="lang" value="esp"> Espanhol
+           <input type="radio" name="lang" value="hav"> Havaiano<br><br>
+           <br>Tratamento: <input type="radio" name="treatment" value="sr" checked> Sr.
+           <input type="radio" name="treatment" value="sra"> Sra.
+           <input type="radio" name="treatment" value="none"> Nenhum<br><br>
+           
+           Nome: <input type="text" name="nome"/><br><br>
+           <input type="submit" value="Cumprimentar"/>
+        </form>
+
     </body>
 </html>
